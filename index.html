@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Árboles en Matemáticas | Guía Interactiva</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for Mathematical Formulas -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        nature: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                        },
+                        ocean: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            850: '#0c4a6e',
+                            900: '#082f49',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles and animations */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .canvas-container {
+            position: relative;
+            background: radial-gradient(circle, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+        }
+        @keyframes pulse-soft {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .animate-pulse-soft {
+            animation: pulse-soft 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-nature-500 selection:text-white">
+
+    <!-- Custom Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 max-w-sm bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 border border-slate-700">
+        <div id="toast-icon" class="text-xl">💡</div>
+        <div>
+            <h4 id="toast-title" class="font-bold text-sm">Aviso</h4>
+            <p id="toast-msg" class="text-xs text-slate-300">Mensaje de notificación.</p>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-nature-600 to-ocean-600 flex items-center justify-center text-white shadow-md">
+                    <i class="fa-solid fa-network-wired text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold bg-gradient-to-r from-nature-700 to-ocean-700 bg-clip-text text-transparent">Árboles Matemáticos</span>
+                    <p class="text-xs text-slate-500">Explicación Clara y Sencilla</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-600">
+                <a href="#analogia" class="hover:text-nature-600 transition">Analogía</a>
+                <a href="#definicion" class="hover:text-nature-600 transition">¿Qué es?</a>
+                <a href="#propiedades" class="hover:text-nature-600 transition">Regla de Oro</a>
+                <a href="#tipos" class="hover:text-nature-600 transition">Tipos</a>
+                <a href="#extensiones" class="hover:text-nature-600 transition">Bosques y Formas 🌲</a>
+                <a href="#simulador" class="hover:text-nature-600 transition text-nature-700 font-bold">Simulador 🎮</a>
+                <a href="#quiz" class="hover:text-nature-600 transition">Quiz 📝</a>
+            </nav>
+            <div class="flex items-center space-x-3">
+                <a href="#simulador" class="hidden sm:inline-flex bg-nature-600 hover:bg-nature-700 text-white font-medium px-4 py-2 rounded-xl text-sm shadow-md transition transform active:scale-95">
+                    Probar Simulador
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-ocean-50/50 via-nature-50/30 to-slate-50 py-16 lg:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <span class="inline-flex items-center space-x-2 bg-nature-100 text-nature-800 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                        <i class="fa-solid fa-seedling text-nature-600"></i>
+                        <span>Teoría de Grafos para Todos</span>
+                    </span>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                        ¿Qué son los <span class="bg-gradient-to-r from-nature-600 to-ocean-600 bg-clip-text text-transparent">Árboles</span> en Matemáticas?
+                    </h1>
+                    <p class="text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0">
+                        Olvídate de las fórmulas aburridas. Descubre cómo una de las estructuras más potentes de las matemáticas y la tecnología organiza información, conecta ciudades y toma decisiones de forma perfecta.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#analogia" class="flex items-center justify-center space-x-2 bg-ocean-600 hover:bg-ocean-700 text-white font-semibold px-6 py-3.5 rounded-xl shadow-lg transition transform hover:-translate-y-0.5">
+                            <i class="fa-solid fa-compass"></i>
+                            <span>Empezar a Aprender</span>
+                        </a>
+                        <a href="#simulador" class="flex items-center justify-center space-x-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-semibold px-6 py-3.5 rounded-xl shadow-sm transition">
+                            <i class="fa-solid fa-gamepad text-nature-600"></i>
+                            <span>Ir al Simulador Interactivo</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 flex justify-center">
+                    <div class="relative w-full max-w-md bg-gradient-to-br from-nature-500/10 to-ocean-500/10 p-6 rounded-3xl border border-white shadow-xl animate-pulse-soft">
+                        <div class="bg-white p-6 rounded-2xl shadow-md space-y-4">
+                            <div class="flex items-center justify-between border-b pb-3">
+                                <span class="font-bold text-slate-700 flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-nature-500"></span> Estructura Visual
+                                </span>
+                                <span class="text-xs bg-ocean-100 text-ocean-800 px-2 py-1 rounded font-mono">Nodos y Aristas</span>
+                            </div>
+                            <!-- Mock diagram visual -->
+                            <div class="h-48 flex flex-col items-center justify-center relative">
+                                <div class="w-12 h-12 bg-nature-600 text-white rounded-full flex items-center justify-center font-bold shadow-md z-10">Raíz</div>
+                                <div class="w-0.5 h-8 bg-slate-300 my-1"></div>
+                                <div class="flex space-x-12">
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-10 h-10 bg-ocean-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow">Hijo A</div>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <div class="w-10 h-10 bg-ocean-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow">Hijo B</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-center text-slate-500 italic">"Conectados sin formar círculos cerrados"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24">
+
+        <!-- Section 1: Everyday Analogy -->
+        <section id="analogia" class="scroll-mt-28">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-nature-700 font-bold text-sm uppercase tracking-wider">Paso 1: Entendiendo con ejemplos reales</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">La Analogía de la Vida Cotidiana</h2>
+                <p class="text-slate-600 mt-3">Para entender un árbol matemático, no pienses en hojas y troncos de la selva, piensa en estas situaciones:</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Analogy 1 -->
+                <div class="glass-card p-8 rounded-3xl shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl mb-6 shadow-sm">
+                        <i class="fa-solid fa-sitemap"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">El Árbol Genealógico</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Imagina a tus abuelos en la parte superior. De ellos descienden tus padres, y de ellos tú y tus hermanos. Cada persona es un <strong>nodo</strong> y la relación familiar es una <strong>arista</strong> (conexión). Si subes o bajas, siempre hay un <strong>único camino</strong> para llegar de un pariente a otro sin dar vueltas raras.
+                    </p>
+                </div>
+
+                <!-- Analogy 2 -->
+                <div class="glass-card p-8 rounded-3xl shadow-sm hover:shadow-md transition">
+                    <div class="w-12 h-12 rounded-2xl bg-ocean-100 text-ocean-600 flex items-center justify-center text-xl mb-6 shadow-sm">
+                        <i class="fa-solid fa-water"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Tuberías de Agua en una Ciudad</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Piensa en cómo llega el agua desde una planta principal de bombeo hasta los grifos de todas las casas sin crear anillos cerrados (loops). El agua fluye eficientemente desde la fuente hasta cada hogar tomando una sola ruta lógica. Si hubiera un circuito cerrado de tuberías, el agua daría vueltas inútilmente.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Mathematical Definition -->
+        <section id="definicion" class="scroll-mt-28 bg-white p-8 sm:p-12 rounded-3xl shadow-sm border border-slate-200">
+            <div class="max-w-3xl mx-auto">
+                <span class="text-ocean-700 font-bold text-sm uppercase tracking-wider">Paso 2: Formalizando el concepto</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2 mb-6">¿Qué es un Árbol en Matemáticas?</h2>
+                <div class="prose prose-slate max-w-none text-slate-600 space-y-4">
+                    <p class="text-lg leading-relaxed">
+                        En la rama de las matemáticas llamada <strong>Teoría de Grafos</strong>, un grafo es simplemente un conjunto de puntos (llamados <strong>vértices</strong> o nodos) unidos por líneas (llamadas <strong>aristas</strong>). Un <em>árbol</em> es un tipo muy especial de grafo que cumple dos reglas de oro inquebrantables:
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-8 h-8 rounded-full bg-nature-100 text-nature-700 flex items-center justify-center font-bold">1</div>
+                            <h4 class="font-bold text-slate-900 text-lg">Es Conexo</h4>
+                        </div>
+                        <p class="text-sm text-slate-600">
+                            Significa que <strong>todos los nodos están conectados</strong> entre sí. No hay piezas sueltas ni islas apartadas; puedes viajar desde cualquier punto a cualquier otro punto caminando por las líneas.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-8 h-8 rounded-full bg-ocean-100 text-ocean-700 flex items-center justify-center font-bold">2</div>
+                            <h4 class="font-bold text-slate-900 text-lg">Es Acíclico (Sin Ciclos)</h4>
+                        </div>
+                        <p class="text-sm text-slate-600">
+                            Significa que <strong>no hay circuitos cerrados</strong>. Si empiezas en un nodo y te mueves por las líneas, jamás podrás regresar al mismo punto inicial sin dar la vuelta por el mismo camino.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Golden Rule & Properties -->
+        <section id="propiedades" class="scroll-mt-28">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-nature-700 font-bold text-sm uppercase tracking-wider">Paso 3: La fórmula mágica</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">Propiedades Clave: La Regla de Oro</h2>
+                <p class="text-slate-600 mt-3">En cualquier árbol matemático, hay una relación numérica perfecta entre los nodos y las conexiones:</p>
+            </div>
+
+            <div class="bg-gradient-to-r from-nature-900 to-ocean-900 text-white p-8 sm:p-12 rounded-3xl shadow-xl relative overflow-hidden">
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4">
+                        <span class="bg-nature-500/30 text-nature-300 text-xs font-bold px-3 py-1 rounded-full uppercase">Fórmula Fundamental</span>
+                        <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Si hay <span class="text-nature-400">N</span> vértices, hay exactamente <span class="text-ocean-300">N - 1</span> aristas.</h3>
+                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                            Esta es infalible. Si dibujas un árbol con <strong>5 nodos</strong>, tendrá obligatoriamente <strong>4 líneas (aristas)</strong>. Si le quitas una línea, el árbol se rompe en dos pedazos. Si le añades una línea extra, ¡aparece un ciclo prohibido!
+                        </p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 text-center space-y-4">
+                        <p class="text-sm font-medium text-slate-200">Ejemplo práctico rápido:</p>
+                        <div class="flex justify-center items-center space-x-6 text-center">
+                            <div>
+                                <span class="block text-3xl font-extrabold text-nature-400">4</span>
+                                <span class="text-xs text-slate-300">Nodos (N)</span>
+                            </div>
+                            <span class="text-2xl text-slate-400">→</span>
+                            <div>
+                                <span class="block text-3xl font-extrabold text-ocean-300">3</span>
+                                <span class="text-xs text-slate-300">Aristas (N - 1)</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-300 italic pt-2">"Menos aristas que nodos para mantener el equilibrio exacto"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Types of Trees -->
+        <section id="tipos" class="scroll-mt-28">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-ocean-700 font-bold text-sm uppercase tracking-wider">Paso 4: Variedades</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">Tipos Principales de Árboles</h2>
+                <p class="text-slate-600 mt-3">Dependiendo de cómo se utilicen, los árboles se dividen en tres grandes familias:</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Type 1 -->
+                <div class="glass-card p-6 rounded-3xl shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-nature-100 text-nature-700 flex items-center justify-center font-bold text-lg mb-4">1</div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Árboles Libres</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            No tienen ningún nodo especial elegido como "jefe" o raíz. Flotan libremente en el espacio matemático sin jerarquías fijas.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-500 font-mono">
+                        Uso: Estructuras abstractas puras.
+                    </div>
+                </div>
+
+                <!-- Type 2 -->
+                <div class="glass-card p-6 rounded-3xl shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-ocean-100 text-ocean-700 flex items-center justify-center font-bold text-lg mb-4">2</div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Árboles con Raíz</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Tienen un nodo principal distinguido llamado <strong>Raíz</strong> situado en la cumbre, del cual descienden los demás nodos en orden jerárquico.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-500 font-mono">
+                        Uso: Directorios de archivos (carpetas).
+                    </div>
+                </div>
+
+                <!-- Type 3 -->
+                <div class="glass-card p-6 rounded-3xl shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-lg mb-4">3</div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">Árboles Binarios</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed">
+                            Árboles con raíz donde cada nodo padre puede tener <strong>como máximo dos hijos</strong> (izquierdo y derecho). Son los reyes absolutos de la programación.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-500 font-mono">
+                        Uso: Buscadores de internet y bases de datos.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section NEW: Complete vs Incomplete Trees, Forests, and Key Formulas -->
+        <section id="extensiones" class="scroll-mt-28 space-y-12">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="text-nature-700 font-bold text-sm uppercase tracking-wider">Nuevos Conceptos Avanzados</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">Clasificación, Bosques y Fórmulas Clave</h2>
+                <p class="text-slate-600 mt-3">Profundiza en la simetría de los nodos, colecciones de árboles y reglas matemáticas avanzadas.</p>
+            </div>
+
+            <!-- 1. Clasificación según la cantidad de hijos + Diagrama Visual -->
+            <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-slate-200">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-nature-100 text-nature-700 flex items-center justify-center text-lg font-bold">1</div>
+                    <h3 class="text-2xl font-bold text-slate-900">Clasificación según la cantidad de hijos (Árboles Completos vs. Incompletos)</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="space-y-4">
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-2">
+                            <div class="flex items-center space-x-2 text-nature-700 font-bold text-sm">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <h4>Árbol Completo / Lleno</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Es perfectamente simétrico y ordenado. Todos los nodos padres tienen exactamente la misma cantidad de hijos y las hojas terminan a la misma profundidad.
+                            </p>
+                        </div>
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-2">
+                            <div class="flex items-center space-x-2 text-amber-700 font-bold text-sm">
+                                <i class="fa-solid fa-code-branch"></i>
+                                <h4>Árbol Incompleto / Desparejo</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Común en la vida real. Ramas de tamaño desigual, donde un nodo tiene dos hijos y otro uno o ninguno, variando la altura de sus terminales.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Diagrama Visual Conceptual -->
+                    <div class="bg-gradient-to-br from-slate-100 to-nature-50/40 p-6 rounded-2xl border border-slate-200 flex flex-col items-center justify-center space-y-4">
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Esquema Comparativo Visual</span>
+                        <div class="flex justify-around w-full text-center">
+                            <div class="space-y-2">
+                                <span class="text-xs font-bold text-nature-700">Completo (Simétrico)</span>
+                                <div class="bg-white p-3 rounded-xl shadow-sm border border-nature-200 text-xs font-mono space-y-1">
+                                    <div class="text-nature-600 font-bold">● (Raíz)</div>
+                                    <div class="text-slate-400">↙ &nbsp; ↘</div>
+                                    <div class="flex justify-center space-x-2 text-ocean-600"><span>●</span><span>●</span></div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <span class="text-xs font-bold text-amber-700">Incompleto (Desparejo)</span>
+                                <div class="bg-white p-3 rounded-xl shadow-sm border border-amber-200 text-xs font-mono space-y-1">
+                                    <div class="text-amber-600 font-bold">● (Raíz)</div>
+                                    <div class="text-slate-400">↙ &nbsp; ↘</div>
+                                    <div class="flex justify-center space-x-4 text-ocean-600"><span>●</span><span class="text-slate-300">· (vacío)</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. ¿Qué es un Bosque? + Diagrama Visual -->
+            <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-slate-200">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-ocean-100 text-ocean-700 flex items-center justify-center text-lg font-bold">2</div>
+                    <h3 class="text-2xl font-bold text-slate-900">¿Qué es un Bosque? (Forest)</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="space-y-4 text-slate-600 text-sm leading-relaxed">
+                        <p>
+                            🌳 En la teoría de grafos, un <strong>bosque</strong> es un conjunto de varios árboles desconectados entre sí.
+                        </p>
+                        <p>
+                            Mantiene la regla acíclica (sin ciclos ni círculos cerrados), pero a diferencia de un árbol tradicional, <strong>no es conexo</strong> (sus componentes están separados en islas independientes).
+                        </p>
+                    </div>
+                    <div class="bg-ocean-50 p-6 rounded-2xl border border-ocean-100 text-center space-y-3">
+                        <span class="text-xs uppercase font-bold text-ocean-700 tracking-wider">Esquema de un Bosque (M = 2 componentes)</span>
+                        <div class="flex justify-center items-center space-x-8 text-xs font-mono">
+                            <div class="p-3 bg-white rounded-xl shadow-sm border border-ocean-200">
+                                <span class="text-ocean-600 font-bold">Árbol 1</span><br>● — ●
+                            </div>
+                            <span class="text-slate-400 font-bold">y</span>
+                            <div class="p-3 bg-white rounded-xl shadow-sm border border-ocean-200">
+                                <span class="text-ocean-600 font-bold">Árbol 2</span><br>● — ● — ●
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Fórmulas Matemáticas Clave y Reglas de Estructura -->
+            <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-slate-200">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-lg font-bold">3</div>
+                    <h3 class="text-2xl font-bold text-slate-900">Fórmulas Matemáticas Clave y Reglas de Estructura</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="font-bold text-slate-900 text-base">Relación de Vértices y Aristas en Bosques</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Si un bosque tiene \(N\) vértices (nodos) y está dividido en \(M\) componentes independientes (varios arbolitos separados), la cantidad exacta de aristas siempre será:
+                        </p>
+                        <div class="p-4 bg-white rounded-xl border border-slate-200 text-center font-mono text-nature-700 font-bold text-lg shadow-sm">
+                            \[\text{Aristas} = N - M\]
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="font-bold text-slate-900 text-base">Árboles \(n\)-arios y Regulares</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Clasificaciones donde se limita matemáticamente cuántos hijos como máximo puede tener cada nodo:
+                        </p>
+                        <ul class="text-sm text-slate-600 space-y-2 list-disc list-inside">
+                            <li><strong>Binario:</strong> Máximo 2 hijos por nodo.</li>
+                            <li><strong>Ternario:</strong> Máximo 3 hijos por nodo.</li>
+                            <li><strong>Regular:</strong> Si todos los nodos internos cumplen estrictamente con ese límite máximo de hijos.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Interactive Tree Builder Simulator -->
+        <section id="simulador" class="scroll-mt-28 bg-white p-6 sm:p-10 rounded-3xl shadow-lg border border-slate-200">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
+                <div>
+                    <span class="text-nature-700 font-bold text-sm uppercase tracking-wider">Práctica interactiva dinámica (Hasta 25 Nodos)</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">Simulador Inteligente en Vivo 🎮</h2>
+                    <p class="text-slate-600 text-sm mt-1">Crea nodos, únelos en grandes redes y visualiza las especificaciones detalladas de cada árbol o bosque.</p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button id="btn-mode-add" onclick="setSimMode('add')" class="px-3 py-2 bg-nature-600 text-white rounded-xl text-xs font-semibold shadow transition">➕ Añadir</button>
+                    <button id="btn-mode-connect" onclick="setSimMode('connect')" class="px-3 py-2 bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold hover:bg-slate-300 transition">🔗 Unir</button>
+                    <button id="btn-mode-delete" onclick="setSimMode('delete')" class="px-3 py-2 bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold hover:bg-slate-300 transition">❌ Borrar Nodo</button>
+                    <button onclick="resetSim()" class="px-3 py-2 bg-rose-100 text-rose-700 rounded-xl text-xs font-semibold hover:bg-rose-200 transition">🗑️ Limpiar</button>
+                </div>
+            </div>
+
+            <!-- Simulation Stats Bar -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-center">
+                    <span class="block text-xs text-slate-500 uppercase font-semibold">Nodos (N)</span>
+                    <span id="stat-nodes" class="text-2xl font-extrabold text-slate-800">0</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-center">
+                    <span class="block text-xs text-slate-500 uppercase font-semibold">Aristas (E)</span>
+                    <span id="stat-edges" class="text-2xl font-extrabold text-slate-800">0</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-center">
+                    <span class="block text-xs text-slate-500 uppercase font-semibold">Estado Estructural</span>
+                    <span id="stat-is-tree" class="text-sm font-bold text-slate-400">Esperando...</span>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 text-center">
+                    <span class="block text-xs text-slate-500 uppercase font-semibold">Componentes (M)</span>
+                    <span id="stat-components" class="text-2xl font-extrabold text-slate-800">0</span>
+                </div>
+            </div>
+
+            <!-- Canvas / Workspace Area -->
+            <div id="sim-canvas" class="canvas-container h-[450px] w-full relative cursor-crosshair border border-slate-300">
+                <div id="canvas-hint" class="absolute inset-0 flex items-center justify-center pointer-events-none select-none text-slate-400 text-sm">
+                    <p>Haz clic en cualquier parte para crear tu primer nodo (hasta 25) 📌</p>
+                </div>
+                <!-- SVG layer for edges -->
+                <svg id="sim-svg" class="absolute inset-0 w-full h-full pointer-events-none z-0"></svg>
+            </div>
+            
+            <!-- Dynamic Component Specs Panel -->
+            <div class="mt-4 p-5 bg-ocean-50 text-ocean-900 rounded-2xl text-xs sm:text-sm space-y-3">
+                <div class="flex items-start space-x-3">
+                    <i class="fa-solid fa-circle-info text-ocean-600 text-base mt-0.5"></i>
+                    <div id="sim-helper-text" class="w-full">
+                        <strong>Dinámica activa:</strong> Crea nodos y conecta redes de gran tamaño para ver el diagnóstico detallado de cada componente.
+                    </div>
+                </div>
+                <div id="components-specs-container" class="hidden pt-3 border-t border-ocean-200/60 space-y-2">
+                    <span class="font-bold text-ocean-800 text-xs uppercase tracking-wider block">📋 Especificaciones detalladas por cada Árbol del Bosque:</span>
+                    <div id="components-specs-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Mini Quiz Game -->
+        <section id="quiz" class="scroll-mt-28 bg-white p-8 sm:p-12 rounded-3xl shadow-sm border border-slate-200">
+            <div class="max-w-3xl mx-auto">
+                <div class="text-center mb-8">
+                    <span class="text-nature-700 font-bold text-sm uppercase tracking-wider">Pon a prueba tus conocimientos</span>
+                    <h2 class="text-3xl font-bold text-slate-900 mt-2">Mini Quiz Relámpago 📝</h2>
+                    <p class="text-slate-600 mt-2">Responde estas 3 preguntas sencillas para confirmar que dominas el tema ante tus compañeros.</p>
+                </div>
+
+                <div id="quiz-container" class="space-y-6">
+                    <!-- Question 1 -->
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 quiz-question" data-question="0">
+                        <h4 class="font-bold text-slate-900 text-lg mb-3">1. Si un árbol matemático tiene exactamente 6 vértices ($N = 6$), ¿cuántas aristas debe tener obligatoriamente?</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-3 p-3 bg-white rounded-xl border border-slate-200 hover:border-nature-500 cursor-pointer transition">
+                                <input type="radio" name="q0" value="wrong" class="text-nature-600">
+                                <span class="text-sm text-slate-700">6 aristas</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 bg-white rounded-xl border border-slate-200 hover:border-nature-500 cursor-pointer transition">
+                                <input type="radio" name="q0" value="correct" class="text-nature-600">
+                                <span class="text-sm text-slate-700">5 aristas (La regla N - 1)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 bg-white rounded-xl border border-slate-200 hover:border-nature-500 cursor-pointer transition">
+                                <input type="radio" name="q0" value="wrong" class="text-nature-600">
+                                <span class="text-sm text-slate-700">12 aristas</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 quiz-question" data-question="1">
+                        <h4 class="font-bold text-slate-900 text-lg mb-3">2. ¿Qué ocurre si a un árbol matemático le añadimos una arista extra conectando dos nodos que ya tenían un camino entre ellos?</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-3 p-3 bg-white rounded-xl border border-slate-200 hover:border-nature-500 cursor-pointer transition">
+                                <input type="radio" name="q1" value="correct" class="text-nature-600">
+                                <span class="text-sm text-slate-700">Se forma un ciclo (deja de ser un árbol válido)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 bg-white rounded-xl border border-slate-200 hover:border-nature-500 cursor-pointer transition">
+                                <input type="radio" name="q1" value="wrong" class="text-nature-600">
+                                <span class="text-sm text-slate-700">Se vuelve más veloz</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 bg-white rounded-xl border border-slate-200 hover:border-nature-500 cursor-pointer transition">
+                                <input type="radio" name="q1" value="wrong" class="text-nature-600">
+                                <span class="text-sm text-slate-700">No pasa nada, sigue igual</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200 quiz-question" data-question="2">
+                        <h4 class="font-bold text-slate-900 text-lg mb-3">3. ¿Cómo se le llama a un árbol con raíz donde cada nodo padre tiene como máximo dos hijos?</h4>
+                        <div class="space-y-2">
+                            <label class="flex items-center space-x-3 p-3 bg-white rounded-xl border border-slate-200 hover:border-nature-500 cursor-pointer transition">
+                                <input type="radio" name="q2" value="wrong" class="text-nature-600">
+                                <span class="text-sm text-slate-700">Árbol libre</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 bg-white rounded-xl border border-slate-200 hover:border-nature-500 cursor-pointer transition">
+                                <input type="radio" name="q2" value="wrong" class="text-nature-600">
+                                <span class="text-sm text-slate-700">Árbol circular</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 bg-white rounded-xl border border-slate-200 hover:border-nature-500 cursor-pointer transition">
+                                <input type="radio" name="q2" value="correct" class="text-nature-600">
+                                <span class="text-sm text-slate-700">Árbol binario</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="text-center pt-4">
+                        <button onclick="evaluateQuiz()" class="bg-nature-600 hover:bg-nature-700 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition transform active:scale-95">
+                            Comprobar Mis Respuestas 🎯
+                        </button>
+                    </div>
+
+                    <div id="quiz-result" class="hidden p-6 rounded-2xl text-center font-bold text-lg"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-20 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-4">
+            <div class="flex items-center justify-center space-x-2">
+                <span class="w-8 h-8 rounded-lg bg-nature-600 text-white flex items-center justify-center font-bold">🌳</span>
+                <span class="text-white font-bold text-lg">Árboles Matemáticos</span>
+            </div>
+            <p class="text-sm text-slate-500 max-w-md mx-auto">
+                Página web educativa diseñada para explicar la teoría de grafos y árboles de forma clara, sencilla y visual a estudiantes.
+            </p>
+            <p class="text-xs text-slate-600 pt-4">© 2026 • Creado con HTML, Tailwind CSS y JavaScript puro.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Interactive Logic -->
+    <script>
+        // --- TOAST NOTIFICATION SYSTEM ---
+        function showToast(title, msg, icon = '💡') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-msg').innerText = msg;
+            document.getElementById('toast-icon').innerText = icon;
+
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 4000);
+        }
+
+        // --- INTERACTIVE SIMULATOR LOGIC ---
+        let simMode = 'add'; // 'add', 'connect', or 'delete'
+        let nodes = []; // array of {id, x, y, label}
+        let edges = []; // array of {from, to}
+        let selectedNodeForConnection = null;
+
+        const canvas = document.getElementById('sim-canvas');
+        const svg = document.getElementById('sim-svg');
+        const canvasHint = document.getElementById('canvas-hint');
+
+        function setSimMode(mode) {
+            simMode = mode;
+            selectedNodeForConnection = null;
+            
+            const btnAdd = document.getElementById('btn-mode-add');
+            const btnConnect = document.getElementById('btn-mode-connect');
+            const btnDelete = document.getElementById('btn-mode-delete');
+            const helperText = document.getElementById('sim-helper-text');
+
+            [btnAdd, btnConnect, btnDelete].forEach(b => {
+                b.className = "px-3 py-2 bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold hover:bg-slate-300 transition";
+            });
+
+            if (mode === 'add') {
+                btnAdd.className = "px-3 py-2 bg-nature-600 text-white rounded-xl text-xs font-semibold shadow transition";
+                helperText.innerHTML = "<strong>Modo Añadir:</strong> Haz clic en cualquier espacio vacío del panel para crear un nuevo nodo numerado (máximo 25).";
+            } else if (mode === 'connect') {
+                btnConnect.className = "px-3 py-2 bg-ocean-600 text-white rounded-xl text-xs font-semibold shadow transition";
+                helperText.innerHTML = "<strong>Modo Unir:</strong> Haz clic en un primer nodo y luego en un segundo nodo para unirlos mediante una arista.";
+            } else if (mode === 'delete') {
+                btnDelete.className = "px-3 py-2 bg-rose-600 text-white rounded-xl text-xs font-semibold shadow transition";
+                helperText.innerHTML = "<strong>Modo Borrar:</strong> Haz clic sobre cualquier nodo para eliminarlo de forma individual y limpiar sus aristas conectadas.";
+            }
+            renderSim();
+        }
+
+        canvas.addEventListener('click', function(e) {
+            if (e.target !== canvas && e.target !== svg && e.target !== canvasHint && !e.target.id.includes('sim-canvas')) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            if (simMode === 'add') {
+                if (nodes.length >= 25) {
+                    showToast('Límite alcanzado', 'El simulador permite un máximo de 25 nodos.', '⚠️');
+                    return;
+                }
+                const newNode = {
+                    id: nodes.length,
+                    x: x,
+                    y: y,
+                    label: `N${nodes.length + 1}`
+                };
+                nodes.push(newNode);
+                showToast('Nodo Creado', `Se añadió el nodo ${newNode.label}`, '📌');
+                updateStats();
+                renderSim();
+            }
+        });
+
+        function handleNodeClick(nodeId, event) {
+            event.stopPropagation();
+            if (simMode === 'connect') {
+                if (selectedNodeForConnection === null) {
+                    selectedNodeForConnection = nodeId;
+                    showToast('Nodo Seleccionado', `Nodo N${nodeId + 1} seleccionado. Haz clic en otro nodo para unirlos.`, '🔗');
+                    renderSim();
+                } else {
+                    if (selectedNodeForConnection === nodeId) {
+                        selectedNodeForConnection = null;
+                        renderSim();
+                        return;
+                    }
+
+                    const from = selectedNodeForConnection;
+                    const to = nodeId;
+
+                    const exists = edges.some(edge => 
+                        (edge.from === from && edge.to === to) || (edge.from === to && edge.to === from)
+                    );
+
+                    if (exists) {
+                        showToast('Arista existente', 'Estos dos nodos ya están conectados.', '⚠️');
+                        selectedNodeForConnection = null;
+                        renderSim();
+                        return;
+                    }
+
+                    edges.push({ from, to });
+                    if (createsCycle()) {
+                        edges.pop();
+                        showToast('¡Ciclo Detectado! 🚫', 'Los árboles y bosques son acíclicos. Esta conexión cerraría un círculo prohibido.', '❌');
+                    } else {
+                        showToast('¡Arista Conectada!', `Se unió N${from + 1} con N${to + 1} exitosamente.`, '✅');
+                    }
+
+                    selectedNodeForConnection = null;
+                    updateStats();
+                    renderSim();
+                }
+            } else if (simMode === 'delete') {
+                const nodeToRemove = nodes.find(n => n.id === nodeId);
+                nodes = nodes.filter(n => n.id !== nodeId);
+                edges = edges.filter(e => e.from !== nodeId && e.to !== nodeId);
+                
+                showToast('Nodo Eliminado', `Se removió el nodo ${nodeToRemove ? nodeToRemove.label : ''} y sus conexiones.`, '🗑️');
+                selectedNodeForConnection = null;
+                updateStats();
+                renderSim();
+            }
+        }
+
+        function createsCycle() {
+            if (nodes.length === 0) return false;
+            const adj = {};
+            nodes.forEach(n => adj[n.id] = []);
+            edges.forEach(e => {
+                if(adj[e.from]) adj[e.from].push(e.to);
+                if(adj[e.to]) adj[e.to].push(e.from);
+            });
+
+            const visited = new Set();
+            function dfs(node, parent) {
+                visited.add(node);
+                for (let neighbor of adj[node]) {
+                    if (!visited.has(neighbor)) {
+                        if (dfs(neighbor, node)) return true;
+                    } else if (neighbor !== parent) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            for (let n of nodes) {
+                if (!visited.has(n.id)) {
+                    if (dfs(n.id, -1)) return true;
+                }
+            }
+            return false;
+        }
+
+        function getComponentsDetails() {
+            if (nodes.length === 0) return [];
+            const adj = {};
+            nodes.forEach(n => adj[n.id] = []);
+            edges.forEach(e => {
+                if(adj[e.from]) adj[e.from].push(e.to);
+                if(adj[e.to]) adj[e.to].push(e.from);
+            });
+
+            const visited = new Set();
+            const components = [];
+
+            nodes.forEach(n => {
+                if (!visited.has(n.id)) {
+                    const compNodes = [];
+                    const queue = [n.id];
+                    visited.add(n.id);
+                    compNodes.push(n.id);
+
+                    while (queue.length > 0) {
+                        const curr = queue.shift();
+                        for (let neighbor of adj[curr]) {
+                            if (!visited.has(neighbor)) {
+                                visited.add(neighbor);
+                                compNodes.push(neighbor);
+                                queue.push(neighbor);
+                            }
+                        }
+                    }
+
+                    let compEdges = 0;
+                    edges.forEach(e => {
+                        if (compNodes.includes(e.from) && compNodes.includes(e.to)) {
+                            compEdges++;
+                        }
+                    });
+
+                    let evaluation = "Árbol Válido";
+                    if (compNodes.length === 1) {
+                        evaluation = "Nodo Raíz Aislado 📌";
+                    } else if (compEdges === compNodes.length - 1) {
+                        evaluation = evaluateComponentPerfectness(compNodes, adj);
+                    } else {
+                        evaluation = "Incompleto o con anomalías ⚠️";
+                    }
+
+                    components.push({
+                        nodesCount: compNodes.length,
+                        edgesCount: compEdges,
+                        status: evaluation,
+                        nodeLabels: compNodes.map(id => `N${id + 1}`).join(', ')
+                    });
+                }
+            });
+
+            return components;
+        }
+
+        function evaluateComponentPerfectness(compNodes, adj) {
+            let maxChildren = 0;
+            let minChildren = Infinity;
+            const visited = new Set();
+            const root = compNodes[0];
+            const queue = [root];
+            visited.add(root);
+
+            while(queue.length > 0) {
+                const curr = queue.shift();
+                let childrenFound = 0;
+                for (let neighbor of adj[curr]) {
+                    if (!visited.has(neighbor) && compNodes.includes(neighbor)) {
+                        visited.add(neighbor);
+                        childrenFound++;
+                        queue.push(neighbor);
+                    }
+                }
+                if (childrenFound > 0) {
+                    if (childrenFound > maxChildren) maxChildren = childrenFound;
+                    if (childrenFound < minChildren) minChildren = childrenFound;
+                }
+            }
+
+            if (maxChildren === minChildren && maxChildren > 0) {
+                return "Árbol Completo / Perfecto 🌳✨";
+            } else {
+                return "Árbol Incompleto / Desparejo 🌿";
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('stat-nodes').innerText = nodes.length;
+            document.getElementById('stat-edges').innerText = edges.length;
+
+            const comps = getComponentsDetails();
+            const M_count = comps.length;
+            document.getElementById('stat-components').innerText = M_count;
+
+            const isTreeEl = document.getElementById('stat-is-tree');
+            const helperText = document.getElementById('sim-helper-text');
+            const specsContainer = document.getElementById('components-specs-container');
+            const specsList = document.getElementById('components-specs-list');
+            
+            specsList.innerHTML = '';
+
+            if (nodes.length === 0) {
+                isTreeEl.innerText = "Añade nodos";
+                isTreeEl.className = "text-sm font-bold text-slate-400";
+                specsContainer.classList.add('hidden');
+                return;
+            }
+
+            const hasCycle = createsCycle();
+
+            if (hasCycle) {
+                isTreeEl.innerText = "Tiene Ciclos (Inválido) ❌";
+                isTreeEl.className = "text-sm font-bold text-rose-600";
+                helperText.innerHTML = "<strong>Alerta:</strong> Has conectado nodos formando un circuito cerrado. Los árboles y bosques matemáticos deben ser estrictamente acíclicos.";
+                specsContainer.classList.add('hidden');
+                return;
+            }
+
+            if (M_count > 1) {
+                isTreeEl.innerText = `¡Es un Bosque! (${M_count} árboles) 🌲🌲`;
+                isTreeEl.className = "text-sm font-bold text-ocean-600";
+                helperText.innerHTML = `<strong>Bosque Detectado:</strong> Tienes ${nodes.length} nodos y ${edges.length} aristas divididos en ${M_count} componentes independientes. Fórmula cumplida: \\(E = N - M\\).`;
+                
+                specsContainer.classList.remove('hidden');
+                comps.forEach((comp, idx) => {
+                    const card = document.createElement('div');
+                    card.className = "p-3 bg-white rounded-xl border border-ocean-200 shadow-xs space-y-1";
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center font-bold text-ocean-800">
+                            <span>🌲 Árbol #${idx + 1}</span>
+                            <span class="text-xs bg-ocean-100 text-ocean-700 px-2 py-0.5 rounded-full">${comp.status}</span>
+                        </div>
+                        <div class="text-slate-600 text-xs">
+                            • Nodos (N): <strong>${comp.nodesCount}</strong> | Aristas (E): <strong>${comp.edgesCount}</strong><br>
+                            • Integrantes: <span class="font-mono text-slate-700">${comp.nodeLabels}</span>
+                        </div>
+                    `;
+                    specsList.appendChild(card);
+                });
+
+            } else if (M_count === 1) {
+                specsContainer.classList.add('hidden');
+                if (nodes.length === 1 && edges.length === 0) {
+                    isTreeEl.innerText = "Árbol Raíz Único 📌";
+                    isTreeEl.className = "text-sm font-bold text-nature-600";
+                    helperText.innerHTML = "<strong>Nodo Raíz:</strong> Tienes 1 solo nodo aislado actuando como raíz inicial.";
+                } else if (edges.length === nodes.length - 1) {
+                    const adjMap = {};
+                    nodes.forEach(n => adjMap[n.id] = []);
+                    edges.forEach(e => {
+                        if(adjMap[e.from]) adjMap[e.from].push(e.to);
+                        if(adjMap[e.to]) adjMap[e.to].push(e.from);
+                    });
+                    const typeEvaluation = evaluateComponentPerfectness(nodes.map(n => n.id), adjMap);
+                    isTreeEl.innerText = typeEvaluation;
+                    isTreeEl.className = "text-sm font-bold text-nature-600";
+                    helperText.innerHTML = `<strong>Estructura Válida:</strong> Cumple la regla de oro \\(E = N - 1\\) (${edges.length} = ${nodes.length} - 1). Clasificación: <strong>${typeEvaluation}</strong>.`;
+                } else {
+                    isTreeEl.innerText = "Estructura incompleta ⚠️";
+                    isTreeEl.className = "text-sm font-bold text-amber-600";
+                    helperText.innerHTML = "<strong>Aviso:</strong> La cantidad de aristas no coincide con \\(N - 1\\) para formar un árbol conexo perfecto.";
+                }
+            }
+        }
+
+        function renderSim() {
+            svg.innerHTML = '';
+            const existingNodeEls = canvas.querySelectorAll('.sim-node-element');
+            existingNodeEls.forEach(el => el.remove());
+
+            // Render Edges
+            edges.forEach(edge => {
+                const n1 = nodes.find(n => n.id === edge.from);
+                const n2 = nodes.find(n => n.id === edge.to);
+                if (n1 && n2) {
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', n1.x);
+                    line.setAttribute('y1', n1.y);
+                    line.setAttribute('x2', n2.x);
+                    line.setAttribute('y2', n2.y);
+                    line.setAttribute('stroke', '#0ea5e9');
+                    line.setAttribute('stroke-width', '3');
+                    line.setAttribute('stroke-linecap', 'round');
+                    svg.appendChild(line);
+                }
+            });
+
+            // Render Nodes
+            nodes.forEach(node => {
+                const nodeDiv = document.createElement('div');
+                nodeDiv.className = `sim-node-element absolute w-12 h-12 -ml-6 -mt-6 rounded-full flex items-center justify-center font-bold text-white shadow-lg cursor-pointer transition transform hover:scale-110 select-none z-10 ${
+                    selectedNodeForConnection === node.id ? 'bg-amber-500 ring-4 ring-amber-300 animate-pulse' : (simMode === 'delete' ? 'bg-rose-500 hover:bg-rose-600' : 'bg-gradient-to-tr from-nature-600 to-ocean-600')
+                }`;
+                nodeDiv.style.left = `${node.x}px`;
+                nodeDiv.style.top = `${node.y}px`;
+                nodeDiv.innerText = node.label;
+
+                nodeDiv.addEventListener('click', (e) => handleNodeClick(node.id, e));
+                canvas.appendChild(nodeDiv);
+            });
+
+            if (nodes.length > 0 && canvasHint) {
+                canvasHint.style.display = 'none';
+            } else if (nodes.length === 0 && canvasHint) {
+                canvasHint.style.display = 'block';
+            }
+        }
+
+        function resetSim() {
+            nodes = [];
+            edges = [];
+            selectedNodeForConnection = null;
+            updateStats();
+            renderSim();
+            showToast('Simulador Reiniciado', 'Se ha limpiado el espacio de trabajo.', '🗑️');
+        }
+
+        // --- MINI QUIZ LOGIC ---
+        function evaluateQuiz() {
+            const questions = document.querySelectorAll('.quiz-question');
+            let score = 0;
+            let answeredAll = true;
+
+            questions.forEach((q, index) => {
+                const selected = q.querySelector(`input[name="q${index}"]:checked`);
+                if (!selected) {
+                    answeredAll = false;
+                } else if (selected.value === 'correct') {
+                    score++;
+                }
+            });
+
+            const resultDiv = document.getElementById('quiz-result');
+            resultDiv.classList.remove('hidden');
+
+            if (!answeredAll) {
+                resultDiv.className = "p-6 rounded-2xl text-center font-bold text-amber-800 bg-amber-50 border border-amber-200";
+                resultDiv.innerText = "⚠️ Por favor responde todas las preguntas antes de comprobar.";
+                return;
+            }
+
+            if (score === 3) {
+                resultDiv.className = "p-6 rounded-2xl text-center font-bold text-nature-800 bg-nature-50 border border-nature-200";
+                resultDiv.innerText = `🎉 ¡Excelente! Obtuviste 3/3 aciertos. ¡Estás totalmente listo para explicar los árboles en matemáticas a tus compañeros!`;
+                showToast('¡Perfecto!', 'Has dominado el tema de los árboles.', '🏆');
+            } else {
+                resultDiv.className = "p-6 rounded-2xl text-center font-bold text-ocean-800 bg-ocean-50 border border-ocean-200";
+                resultDiv.innerText = `👍 Obtuviste ${score}/3 aciertos. Repasa un poco la teoría de arriba o prueba el simulador para asegurar la máxima nota.`;
+            }
+        }
+    </script>
+</body>
+</html>
